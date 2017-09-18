@@ -63,9 +63,7 @@ public:
   /** Filters */
   typedef UInt8ImageType                                                                    MaskImageType;
   typedef otb::StreamingResampleImageFilter<FloatVectorImageType, FloatVectorImageType>     ResampleImageFilterType;
-  typedef otb::StreamingResampleImageFilter<MaskImageType,MaskImageType>                    ResampleMaskImageFilterType;
   typedef itk::NearestNeighborInterpolateImageFunction<FloatVectorImageType>                NNInterpolatorType;
-  typedef itk::NearestNeighborInterpolateImageFunction<MaskImageType>                       NNMaskImageInterpolatorType;
   typedef otb::Functor::DeltaNDVIFromChannels<FloatVectorImageType::PixelType,
       FloatImageType::PixelType>                                                            DeltaNDVIFunctorType;
   typedef itk::BinaryFunctorImageFilter<FloatVectorImageType, FloatVectorImageType,
@@ -76,7 +74,6 @@ public:
   typedef otb::MultiChannelExtractROI<FloatVectorImageType::InternalPixelType,
       FloatVectorImageType::InternalPixelType>                                              ExtractROIFilterType;
   typedef otb::MosaicFromDirectoryHandler<MaskImageType,FloatImageType>                     MaskHandlerType;
-  typedef itk::AndImageFilter<MaskImageType, MaskImageType>                                 AndFilterType;
   typedef otb::ConnectedLabelsImageFilter<MaskImageType>                                    ConnectedLabelsFilterType;
   typedef otb::CacheLessLabelImageToVectorData<MaskImageType::PixelType>                    VectorizationFilterType;
 
@@ -89,14 +86,14 @@ public:
   {
 
     SetName("ClearCutsDetection");
-    SetDescription("This application performs cuts detection from two input images and "
+    SetDescription("This application performs the detection of clear cuts from two input images and "
         "optional sets of masks (input images masks + forest mask)");
 
     // Documentation
     SetDocName("ClearCutsDetection");
     SetDocLimitations("None");
     SetDocAuthors("RemiCresson");
-    SetDocLongDescription(" This filter implements the clear cut detection method, based "
+    SetDocLongDescription(" This application implements the clear cut detection method, based "
         "on the work of Kenji Ose and Michel Deshayes at IRSTEA. Difference between NDVI "
         "at dates 0 and 1 is computed, then thresholded based on statistics moments. The "
         "output is exported in vector data format.");
@@ -317,7 +314,6 @@ public:
   NDVILabelImageFilterType::Pointer     m_NDVILabelFilter;
   StatsFilterType::Pointer              m_StatsFilter;
   MaskHandlerType::Pointer              m_MaskHandler;
-  AndFilterType::Pointer                m_AndFilter;
   ConnectedLabelsFilterType::Pointer    m_CleanFilter;
   VectorizationFilterType::Pointer      m_VectorizeFilter;
 };
