@@ -1,6 +1,6 @@
 # Clear cuts detection applications
 
-This module contains two applications for NDVI time series processing.
+This module contains two applications for clear cuts detection.
 
 ## Dependencies
 
