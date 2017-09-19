@@ -5,7 +5,6 @@ This module contains two applications for NDVI time series processing.
 ## Dependencies
 
 * The [OTB](https://www.orfeo-toolbox.org/) library
-* The [TimeSeriesUtils](https://gitlab.irstea.fr/remi.cresson/TimeSeriesUtils) remote module for OTB
 * The [SimpleExtractionTools](https://gitlab.irstea.fr/remi.cresson/SimpleExtractionTools) remote module for OTB
 
 ## How to build it
