@@ -5,7 +5,7 @@ This module contains two applications for clear cuts detection.
 ## Dependencies
 
 * The [OTB](https://www.orfeo-toolbox.org/) library
-* The [SimpleExtractionTools](https://gitlab.irstea.fr/remi.cresson/SimpleExtractionTools) remote module for OTB
+* The [SimpleExtractionTools](https://github.com/remicres/SimpleExtractionTools) remote module for OTB
 
 ## How to build it
 
