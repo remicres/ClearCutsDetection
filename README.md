@@ -60,7 +60,7 @@ Contact
 
 For any issues regarding this module please contact Rémi Cresson.
 
-remi.cresson@teledetection.fr
+remi.cresson^irstea.fr
 
 Irstea ((French) National Research Institute of Science and Technology for Environment and Agriculture)
 www.irstea.fr
