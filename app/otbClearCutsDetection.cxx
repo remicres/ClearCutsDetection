@@ -171,7 +171,7 @@ public:
 
     // Set the resample filter with extracted image origin, spacing, and size
     m_ResampleFilter->SetOutputOrigin(m_ExtractROIFilter->GetOutput()->GetOrigin());
-    m_ResampleFilter->SetOutputSpacing(m_ExtractROIFilter->GetOutput()->GetSpacing());
+    m_ResampleFilter->SetOutputSpacing(m_ExtractROIFilter->GetOutput()->GetSignedSpacing());
     m_ResampleFilter->SetOutputSize(m_ExtractROIFilter->GetOutput()->GetLargestPossibleRegion().GetSize());
     m_ResampleFilter->UpdateOutputInformation();
   }
@@ -213,8 +213,8 @@ public:
     // Detect which input image (t0 or t1) have the smallest pixel
     FloatVectorImageType::Pointer inputExtractedT0;
     FloatVectorImageType::Pointer inputExtractedT1;
-    FloatVectorImageType::SpacingType spacingT0 = t0->GetSpacing();
-    FloatVectorImageType::SpacingType spacingT1 = t1->GetSpacing();
+    FloatVectorImageType::SpacingType spacingT0 = t0->GetSignedSpacing();
+    FloatVectorImageType::SpacingType spacingT1 = t1->GetSignedSpacing();
     double pixelAreaTO = vnl_math_abs(spacingT0[0]*spacingT0[1]);
     double pixelAreaT1 = vnl_math_abs(spacingT1[0]*spacingT1[1]);
     if (pixelAreaTO > pixelAreaT1)
@@ -253,10 +253,29 @@ public:
 
     FloatImageType * deltaNDVIImage = m_DeltaNDVIFilter->GetOutput();
 
-    // Mask directory
+    // Forest masks
+    bool hasForestMask = false;
+    std::string forestMasksDir("");
+
+    // Input parameter
     if (HasValue("masksdir"))
       {
-        otbAppLogINFO("Using vegetation masks");
+        hasForestMask = true;
+        forestMasksDir = GetParameterAsString("masksdir");
+      }
+
+    // Environment variable
+    char * envVarVal = std::getenv("FOREST_MASK_DIR");
+    if (envVarVal != NULL)
+      {
+        hasForestMask = true;
+        forestMasksDir = std::string(envVarVal);
+      }
+
+    // Mask directory
+    if (hasForestMask)
+      {
+        otbAppLogINFO("Using vegetation masks from directory " << forestMasksDir);
 
         // Mask Delta NDVI image
         m_MaskImageFilter = MaskImageFilterType::New();
@@ -265,7 +284,7 @@ public:
 
         // Instanciate a mosaic from directory handler
         m_MaskHandler = MaskHandlerType::New();
-        m_MaskHandler->SetDirectory(GetParameterAsString("masksdir"));
+        m_MaskHandler->SetDirectory(forestMasksDir);
         m_MaskHandler->SetReferenceImage(m_DeltaNDVIFilter->GetOutput());
         m_MaskHandler->SetUseReferenceImage(true);
         m_MaskHandler->UpdateOutputInformation();
